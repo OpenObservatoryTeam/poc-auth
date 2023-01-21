@@ -1,42 +1,54 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useMutation, UseMutationResult } from "react-query";
 import { login, LoginBody } from "../api/auth/auth";
 
 const UserContext = createContext<{
   auth: UseMutationResult<
     {
-      id: string;
+      id: number;
       refreshToken: string;
-      token: string;
+      authToken: string;
     },
     unknown,
     LoginBody,
     unknown
   >;
-  userId: string;
+  userId: number | null;
+  token: string | null;
 }>(null!);
 
 const UserContextProvider = ({ children }: { children: JSX.Element }) => {
-  const [token, setToken] = useState("");
-  const [userId, setUserId] = useState("");
-  const [refreshToken, setRefreshToken] = useState("");
+  const [token, setToken] = useState<string | null>(null);
+  const [userId, setUserId] = useState<number | null>(null);
+  const [refreshToken, setRefreshToken] = useState<string | null>(null);
 
   const auth = useMutation({
     mutationFn: login,
     mutationKey: ["login"],
-    onSuccess: (data: { id: string; refreshToken: string; token: string }) => {
+    onSuccess: (data: {
+      id: number;
+      refreshToken: string;
+      authToken: string;
+    }) => {
+      console.log(data.id, data.authToken, data.refreshToken);
       setUserId(data.id);
-      setToken(data.token);
+      setToken(data.authToken);
       setRefreshToken(data.refreshToken);
     },
   });
+
+  useEffect(() => {
+    if (refreshToken) {
+    }
+  }, []);
 
   const value = useMemo(
     () => ({
       userId,
       auth,
+      token,
     }),
-    [userId, auth]
+    [userId, token]
   );
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

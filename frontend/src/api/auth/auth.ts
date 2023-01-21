@@ -1,4 +1,3 @@
-import { useMutation } from "react-query";
 import client from "../client";
 
 export type LoginBody = {username : string, password : string}
