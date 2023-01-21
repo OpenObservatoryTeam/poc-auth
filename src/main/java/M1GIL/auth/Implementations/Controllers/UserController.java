@@ -13,36 +13,34 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-@RestController @RequestMapping("/api") @RequiredArgsConstructor
-public class UserController implements IUserController
-{
+@RestController
+@RequestMapping("/api")
+@RequiredArgsConstructor
+public class UserController implements IUserController {
     private final IUserService userService;
 
     @GetMapping(path = "/users/list")
-    public ResponseEntity<List<User>>getUsers()
-    {
+    public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
     @PostMapping(path = "/users/save")
-    @CrossOrigin("http://localhost:3000")
-    public ResponseEntity<User>saveUser(@RequestBody User user)
-    {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/save").toUriString());
+    public ResponseEntity<User> saveUser(@RequestBody User user) {
+        URI uri = URI
+                .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
     @PostMapping(path = "/roles/save")
-    public ResponseEntity<Role>saveRole(@RequestBody Role role)
-    {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/roles/save").toUriString());
+    public ResponseEntity<Role> saveRole(@RequestBody Role role) {
+        URI uri = URI
+                .create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/roles/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveRole(role));
     }
 
     @PostMapping(path = "/roles/addtouser")
-    public ResponseEntity<?>addRoleToUser(@RequestBody UserRoleModel userRole)
-    {
-        userService.addRoleToUser(userRole.getUsername(),userRole.getRoleName());
+    public ResponseEntity<?> addRoleToUser(@RequestBody UserRoleModel userRole) {
+        userService.addRoleToUser(userRole.getUsername(), userRole.getRoleName());
         return ResponseEntity.ok().build();
     }
 }

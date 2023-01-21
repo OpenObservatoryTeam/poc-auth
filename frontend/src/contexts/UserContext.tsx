@@ -15,12 +15,14 @@ const UserContext = createContext<{
   >;
   userId: number | null;
   token: string | null;
+  username: string | null;
 }>(null!);
 
 const UserContextProvider = ({ children }: { children: JSX.Element }) => {
   const [token, setToken] = useState<string | null>(null);
   const [userId, setUserId] = useState<number | null>(null);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
 
   const auth = useMutation({
     mutationFn: login,
@@ -29,11 +31,13 @@ const UserContextProvider = ({ children }: { children: JSX.Element }) => {
       id: number;
       refreshToken: string;
       authToken: string;
+      username: string;
     }) => {
       console.log(data.id, data.authToken, data.refreshToken);
       setUserId(data.id);
       setToken(data.authToken);
       setRefreshToken(data.refreshToken);
+      setUsername(data.username);
     },
   });
 
@@ -47,8 +51,9 @@ const UserContextProvider = ({ children }: { children: JSX.Element }) => {
       userId,
       auth,
       token,
+      username,
     }),
-    [userId, token]
+    [userId, token, username]
   );
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

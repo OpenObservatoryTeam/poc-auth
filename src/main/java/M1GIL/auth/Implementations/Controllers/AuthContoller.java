@@ -10,20 +10,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController @RequestMapping("/api") @RequiredArgsConstructor
-public class AuthContoller implements IAuthController
-{
+@RestController
+@RequestMapping("/api")
+@RequiredArgsConstructor
+public class AuthContoller implements IAuthController {
     private final IAuthService authService;
-
 
     @Override
     @PostMapping(path = "/auth/login")
-    @CrossOrigin(origins = "http://localhost:3000",allowCredentials = "true")
-    public ResponseEntity<LoginDto> login(@RequestBody LoginModel loginModel)
-    {
+    public ResponseEntity<LoginDto> login(@RequestBody LoginModel loginModel) {
         LoginDto res = authService.Login(loginModel);
 
-        if(res == null)
+        if (res == null)
             return ResponseEntity.status(403).build();
 
         return ResponseEntity.ok().body(res);
@@ -31,12 +29,10 @@ public class AuthContoller implements IAuthController
 
     @Override
     @PostMapping(path = "/auth/signup")
-    @CrossOrigin(origins = "http://localhost:3000",allowCredentials = "true")
-    public ResponseEntity<SignupDto> signup(@RequestBody SignupModel signupModel)
-    {
+    public ResponseEntity<SignupDto> signup(@RequestBody SignupModel signupModel) {
         SignupDto res = authService.Signup(signupModel);
 
-        if(res == null)
+        if (res == null)
             return ResponseEntity.status(403).build();
 
         return ResponseEntity.ok().body(res);

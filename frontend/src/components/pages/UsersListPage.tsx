@@ -1,9 +1,24 @@
-import { isOptionGroup } from "@mui/base";
+import { ClassNames } from "@emotion/react";
+import { Card, Divider, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { useNavigate } from "@tanstack/react-location";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getUsers } from "../../api/users/users";
 import { useUserContext } from "../../contexts/UserContext";
+
+const useStyles = makeStyles({
+  cards: {
+    display: "flex",
+    justifyContent: "space-evenly",
+    marginTop: 25,
+    flexWrap: "wrap",
+  },
+  card: {
+    width: "25%",
+    borderColor: "grey",
+  },
+});
 
 export default function ProfilPage(): JSX.Element {
   const { token } = useUserContext();
@@ -23,12 +38,27 @@ export default function ProfilPage(): JSX.Element {
     },
   });
 
+  const classes = useStyles();
+
   return (
     <div>
-      <h1>Liste des utilisateurs</h1>
-      {users !== null &&
-        users?.length !== 0 &&
-        users?.map((u) => <h1>{u.firstname}</h1>)}
+      <Typography variant="h3" align="center">
+        Liste des utilisateurs
+      </Typography>
+      <div className={classes.cards}>
+        {users !== null &&
+          users?.length !== 0 &&
+          users?.map((u) => (
+            <Card key={u.id} className={classes.card}>
+              <Typography variant="h6" align="center">
+                {u.username}
+              </Typography>
+              <Divider />
+              <Typography variant="body2">{`Prénom : ${u.firstName}`}</Typography>
+              <Typography variant="body2">{`Nom de famille : ${u.lastName}`}</Typography>
+            </Card>
+          ))}
+      </div>
     </div>
   );
 }
