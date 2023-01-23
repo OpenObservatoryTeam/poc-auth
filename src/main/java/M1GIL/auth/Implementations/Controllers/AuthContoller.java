@@ -38,15 +38,19 @@ public class AuthContoller implements IAuthController {
 
         var cookies = request.getCookies();
         for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(REFRESH_TOKEN_NAME)) {
-                cookie.setValue(res.getRefreshToken());
-                cookie.setMaxAge(7 * 24 * 3600);
-            } else {
-                cookie.setMaxAge(60);
-                cookie.setValue(res.getAuthToken());
-            }
+            cookie.setValue(null);
+            cookie.setMaxAge(0);
             response.addCookie(cookie);
         }
+
+        Cookie cookieToken = new Cookie(TOKEN_NAME, res.getAuthToken());
+        Cookie cookieRefresh = new Cookie(REFRESH_TOKEN_NAME, res.getRefreshToken());
+        cookieToken.setMaxAge(60);
+        cookieRefresh.setMaxAge(7 * 24 * 3600);
+        cookieToken.setPath("/");
+        cookieRefresh.setPath("/");
+        response.addCookie(cookieToken);
+        response.addCookie(cookieRefresh);
 
         return ResponseEntity.ok(res);
     }

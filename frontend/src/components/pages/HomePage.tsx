@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-location";
 import { useUserContext } from "../../contexts/UserContext";
 import { useEffect } from "react";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, CircularProgress } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
@@ -13,14 +13,9 @@ const useStyles = makeStyles({
 });
 
 export default function HomePage(): JSX.Element {
-  const { username, token, logOut, loading } = useUserContext();
+  const { username, logOut } = useUserContext();
   const navigation = useNavigate();
-
-  useEffect(() => {
-    if (token === null && !loading) {
-      navigation({ to: "login", replace: true });
-    }
-  }, [loading]);
+  const classes = useStyles();
 
   const handleLogout = () => {
     logOut.mutate(undefined, {
@@ -29,8 +24,6 @@ export default function HomePage(): JSX.Element {
       },
     });
   };
-
-  const classes = useStyles();
 
   return (
     <div>

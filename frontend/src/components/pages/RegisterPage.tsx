@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { register, RegisterBody } from "../../api/auth/auth";
 import ControlledTextInput from "../atoms/ControlledTextInput";
 import { Button } from "@mui/material";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useUserContext } from "../../contexts/UserContext";
 import { useNavigate } from "@tanstack/react-location";
 

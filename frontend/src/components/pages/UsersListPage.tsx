@@ -3,7 +3,7 @@ import { Card, Divider, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useNavigate } from "@tanstack/react-location";
 import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getUsers } from "../../api/users/users";
 import { useUserContext } from "../../contexts/UserContext";
 
@@ -27,11 +27,13 @@ export default function ProfilPage(): JSX.Element {
 
   useEffect(() => {
     if (token === null && !loading) {
+      console.log("bonjour il faut d-s'authentifier");
       navigation({ to: "login", replace: true });
     }
   }, [loading]);
 
   useQuery({
+    queryKey: ["users", "list"],
     queryFn: () => getUsers(token),
     onSuccess: (data) => {
       setUsers(data);
