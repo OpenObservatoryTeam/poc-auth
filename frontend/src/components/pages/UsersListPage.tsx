@@ -21,15 +21,15 @@ const useStyles = makeStyles({
 });
 
 export default function ProfilPage(): JSX.Element {
-  const { token } = useUserContext();
+  const { token, loading } = useUserContext();
   const [users, setUsers] = useState<Array<any> | null>();
   const navigation = useNavigate();
 
   useEffect(() => {
-    if (token === null) {
-      navigation({ to: "/login", replace: true });
+    if (token === null && !loading) {
+      navigation({ to: "login", replace: true });
     }
-  }, []);
+  }, [loading]);
 
   useQuery({
     queryFn: () => getUsers(token),

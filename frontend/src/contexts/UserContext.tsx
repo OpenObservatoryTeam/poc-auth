@@ -17,6 +17,7 @@ const UserContext = createContext<{
   userId: number | null;
   token: string | null;
   username: string | null;
+  loading: boolean;
 }>(null!);
 
 const UserContextProvider = ({ children }: { children: JSX.Element }) => {
@@ -81,6 +82,7 @@ const UserContextProvider = ({ children }: { children: JSX.Element }) => {
       token,
       username,
       logOut,
+      loading: !authenticate.isSuccess && !authenticate.isError,
     }),
     [userId, token, username]
   );
