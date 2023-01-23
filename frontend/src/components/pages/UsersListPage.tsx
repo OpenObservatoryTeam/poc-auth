@@ -36,6 +36,7 @@ export default function ProfilPage(): JSX.Element {
     onSuccess: (data) => {
       setUsers(data);
     },
+    enabled: token !== null && !loading,
   });
 
   const classes = useStyles();
