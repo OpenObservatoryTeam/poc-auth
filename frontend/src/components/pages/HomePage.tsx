@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 });
 
 export default function HomePage(): JSX.Element {
-  const { username, token } = useUserContext();
+  const { username, token, logOut } = useUserContext();
   const navigation = useNavigate();
 
   useEffect(() => {
@@ -22,7 +22,13 @@ export default function HomePage(): JSX.Element {
     }
   }, []);
 
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    logOut.mutate(undefined, {
+      onSettled: (data: any) => {
+        navigation({ to: "login", replace: true });
+      },
+    });
+  };
 
   const classes = useStyles();
 

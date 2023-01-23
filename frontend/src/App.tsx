@@ -1,5 +1,4 @@
 import { ReactLocation, Router } from "@tanstack/react-location";
-import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { UserContextProvider } from "./contexts/UserContext";
 import routes from "./routes";

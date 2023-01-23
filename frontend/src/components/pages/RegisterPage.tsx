@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 });
 
 export default function RegisterPage(): JSX.Element {
-  const { auth } = useUserContext();
+  const { logIn } = useUserContext();
   const navigation = useNavigate();
   const classes = useStyles();
 
@@ -55,7 +55,7 @@ export default function RegisterPage(): JSX.Element {
   const save = useMutation({
     mutationFn: register,
     onSuccess: (data) => {
-      auth.mutate({
+      logIn.mutate({
         username: data.username,
         password: data.password,
       });

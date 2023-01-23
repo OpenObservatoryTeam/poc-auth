@@ -38,7 +38,7 @@ const useStyles = makeStyles({
 });
 
 function LoginPage(): JSX.Element {
-  const { auth } = useUserContext();
+  const { logIn } = useUserContext();
   const navigation = useNavigate();
   const {
     handleSubmit,
@@ -49,7 +49,7 @@ function LoginPage(): JSX.Element {
   });
 
   const onSubmit = (values: LoginBody) => {
-    auth.mutate(values, {
+    logIn.mutate(values, {
       onSuccess: () => navigation({ to: "/" }),
     });
   };
