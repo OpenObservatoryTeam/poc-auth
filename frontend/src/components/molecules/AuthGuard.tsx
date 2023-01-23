@@ -8,6 +8,11 @@ interface AuthGuardProps {
 
 export default function AuthGuard({ children }: AuthGuardProps) {
   const { loading, userId } = useUserContext();
-  if (loading) return <CircularProgress />;
+  if (loading)
+    return (
+      <CircularProgress
+        style={{ position: "absolute", top: "50%", left: "50%" }}
+      />
+    );
   return userId ? <>{children}</> : <Navigate to="/login" />;
 }

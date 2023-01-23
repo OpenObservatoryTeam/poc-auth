@@ -34,11 +34,6 @@ const UserContextProvider = ({ children }: { children: JSX.Element }) => {
     retry: false,
   });
 
-  useEffect(() => {
-    const int = setInterval(() => authenticate.refetch(), 10e3);
-    return () => clearInterval(int);
-  }, []);
-
   const logIn = useMutation({
     mutationFn: login,
     mutationKey: ["login"],
@@ -47,6 +42,15 @@ const UserContextProvider = ({ children }: { children: JSX.Element }) => {
   const token = (logIn.data?.authToken ?? authenticate.data?.authToken)!;
   const userId = (logIn.data?.id ?? authenticate.data?.id)!;
   const username = (logIn?.data?.username ?? authenticate.data?.username)!;
+
+  useEffect(() => {
+    const int = setInterval(() => {
+      if (token !== null) {
+        authenticate.refetch();
+      }
+    }, 10e3);
+    return () => clearInterval(int);
+  }, []);
 
   const logOut = useMutation({
     mutationFn: () => logout(token),
