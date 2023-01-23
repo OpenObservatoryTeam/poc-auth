@@ -50,16 +50,6 @@ const UserContextProvider = ({ children }: { children: JSX.Element }) => {
 
   const authenticate = useMutation({
     mutationFn: auth,
-    onSuccess: (data: {
-      id: number;
-      refreshToken: string;
-      authToken: string;
-      username: string;
-    }) => {
-      setUserId(data.id);
-      setToken(data.authToken);
-      setUsername(data.username);
-    },
   });
 
   useEffect(

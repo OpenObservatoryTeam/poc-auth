@@ -11,18 +11,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import lombok.extern.slf4j.Slf4j;
 
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jackson.JsonObjectDeserializer;
-import org.springframework.boot.json.JsonParser;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Date;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @Transactional
@@ -47,8 +41,6 @@ public class AuthService implements IAuthService {
             return null;
         }
 
-        var map = decode.getClaim("user-data").asMap();
-
         var username = decode.getSubject();
 
         User user = userRepo.findByusername(username);
@@ -59,7 +51,7 @@ public class AuthService implements IAuthService {
 
         String accesToken = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10 + 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 1000))
                 .withClaim("id", loginDto.getId())
                 // .withIssuer(request.getRequestURL().toString())
                 // .withClaim("roles",
@@ -96,7 +88,7 @@ public class AuthService implements IAuthService {
 
         String accesToken = JWT.create()
                 .withSubject(loginModel.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10 + 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 1000))
                 .withClaim("id", loginDto.getId())
                 // .withIssuer(request.getRequestURL().toString())
                 // .withClaim("roles",
@@ -107,7 +99,7 @@ public class AuthService implements IAuthService {
 
         String refreshToken = JWT.create()
                 .withSubject(loginModel.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 30 + 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 7 * 24 * 3600 * 1000))
                 .withClaim("id", loginDto.getId())
                 // .withIssuer(request.getRequestURL().toString())
                 // .withClaim("roles",
