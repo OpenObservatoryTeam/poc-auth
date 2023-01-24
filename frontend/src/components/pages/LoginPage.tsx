@@ -46,7 +46,6 @@ const useStyles = makeStyles({
 function LoginPage(): JSX.Element {
   const { logIn } = useUserContext();
   const navigation = useNavigate();
-  const [error, setError] = useState<boolean>(false);
   const {
     handleSubmit,
     control,
@@ -56,12 +55,8 @@ function LoginPage(): JSX.Element {
   });
 
   const onSubmit = (values: LoginBody) => {
-    setError(false);
     logIn.mutate(values, {
       onSuccess: () => navigation({ to: "/" }),
-      onError: () => {
-        setError(true);
-      },
     });
   };
 
@@ -93,7 +88,7 @@ function LoginPage(): JSX.Element {
           placeholder="Password"
           errorMessage={errors.password?.message}
         />
-        {error && (
+        {logIn.isError && (
           <Typography variant="caption" color="red" align="center">
             Les identifiants sont incorrectes
           </Typography>
