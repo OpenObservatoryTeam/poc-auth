@@ -1,4 +1,5 @@
-import { Button } from "@mui/material";
+import { useState } from "react";
+import { Button, CircularProgress, Typography } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
@@ -35,26 +36,40 @@ const useStyles = makeStyles({
       backgroundColor: "grey",
     },
   },
+  loading: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+  },
 });
 
 function LoginPage(): JSX.Element {
   const { logIn } = useUserContext();
   const navigation = useNavigate();
+  const [error, setError] = useState<boolean>(false);
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginBody>({
     resolver: yupResolver(validationSchema),
   });
 
   const onSubmit = (values: LoginBody) => {
+    setError(false);
     logIn.mutate(values, {
       onSuccess: () => navigation({ to: "/" }),
+      onError: () => {
+        setError(true);
+      },
     });
   };
 
   const classes = useStyles();
+
+  if (isSubmitting) {
+    return <CircularProgress className={classes.loading} />;
+  }
 
   return (
     <div>
@@ -78,12 +93,18 @@ function LoginPage(): JSX.Element {
           placeholder="Password"
           errorMessage={errors.password?.message}
         />
+        {error && (
+          <Typography variant="caption" color="red" align="center">
+            Les identifiants sont incorrectes
+          </Typography>
+        )}
         <Button
           className={classes.button}
           color="inherit"
           type="submit"
           variant="contained"
           style={{ marginTop: "1em", marginBottom: "0.5em" }}
+          disabled={isSubmitting}
         >
           Se connecter
         </Button>
