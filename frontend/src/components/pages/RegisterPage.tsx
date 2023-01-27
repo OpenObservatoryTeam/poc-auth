@@ -54,12 +54,7 @@ export default function RegisterPage(): JSX.Element {
 
   const save = useMutation({
     mutationFn: register,
-    onSuccess: (data) => {
-      logIn.mutate({
-        username: data.username,
-        password: data.password,
-      });
-    },
+    mutationKey: ['register'],
   });
 
   const onSubmit = (values: RegisterBody) => {
